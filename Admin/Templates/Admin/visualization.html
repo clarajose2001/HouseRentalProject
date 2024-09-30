@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Status Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div>
+        <canvas id="bookingStatusChart"></canvas>
+    </div>
+    <div>
+        <canvas id="paymentStatusChart"></canvas>
+    </div>
+
+    <script>
+        fetch("{% url 'booking_status_data' %}")  // Make sure the URL name is correct in your Django app
+        .then(response => response.json())
+        .then(data => {
+            const ctxBooking = document.getElementById('bookingStatusChart').getContext('2d');
+            const ctxPayment = document.getElementById('paymentStatusChart').getContext('2d');
+
+            // Booking Status Chart
+            new Chart(ctxBooking, {
+                type: 'bar',
+                data: {
+                    labels: ['Booked', 'Cancelled', 'Pending'],
+                    datasets: [{
+                        label: 'Booking Status',
+                        data: [
+                            data.booking_status_count.booked,
+                            data.booking_status_count.cancelled,
+                            data.booking_status_count.pending
+                        ],
+                        backgroundColor: ['#4caf50', '#f44336', '#ffeb3b'],
+                    }]
+                }
+            });
+
+            // Payment Status Chart
+            new Chart(ctxPayment, {
+                type: 'pie',
+                data: {
+                    labels: ['Paid', 'Unpaid'],
+                    datasets: [{
+                        label: 'Payment Status',
+                        data: [
+                            data.payment_status_count.paid,
+                            data.payment_status_count.unpaid
+                        ],
+                        backgroundColor: ['#4caf50', '#f44336'],
+                    }]
+                }
+            });
+        });
+    </script>
+</body>
+</html>

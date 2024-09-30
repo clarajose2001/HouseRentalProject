@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Generated</title>
+</head>
+<body>
+    <h1>Email Generation Status</h1>
+    {% if email_content %}
+        <p>Email sent successfully!</p>
+        <h3>Generated Email Content:</h3>
+        <pre>{{ email_content }}</pre>
+    {% else %}
+        <p>No content generated.</p>
+    {% endif %}
+</body>
+</html>

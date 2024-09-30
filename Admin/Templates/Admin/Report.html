@@ -1,0 +1,133 @@
+
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+           font-family: "Times New Roman", Times, serif;
+           margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            margin-right: 5px;
+        }
+        .result-table {
+            margin-top: 20px;
+        }
+        .print-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Report</h1>
+    <div class="container">
+        <table class="table">
+            <tr>
+                <td>Status</td>
+                <td>From Date</td>
+                <td><input type="date" class="form-control" id="txt_fdate" onchange="getReport()"></td>
+                <td>To Date</td>
+                <td><input type="date" class="form-control" id="txt_tdate" onchange="getReport()"></td>
+                <!-- <td>Status</td> -->
+                <!-- <td>
+                    <select class="form-control" id="txt_con" onchange="getReport()">
+                        <option value="">....Select....</option>
+                        <option value="0">Not Payed</option>
+                        <option value="1">Payed</option>
+                    
+                    </select>
+                </td> -->
+                <td><button class="btn btn-primary print-btn" onclick="getPrint('result')">Print</button></td>
+            </tr>
+        </table>
+        <div id="result" class="result-table">
+            <table class="table">
+                <tr>
+                    <td>SL No</td>
+                    <td>Date</td>
+                    <td>House</td>
+                    <td>Amount</td> 
+                    <td>Action</td>
+                    <td>Send Mail</td> 
+                </tr>   
+                {% for item in booking %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.booking_date }}</td>
+                    <td>{{ item.house.house_title }}</td>
+                    <td>{{ item.booking_amount }}</td>
+                    
+                    <td>
+                        {% if item.payment_status == '0' %}
+                        <span style="color: red;">Not Payed</span>
+                        {% elif item.payment_status == '1' %}
+                        <span style="color: green;">Payed</span>
+                        {% else %}
+                        Error
+
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary" href="{% url 'webadmin:send_mail' item.id %}">Send Mail</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function getReport() {
+            var status = document.getElementById('txt_con').value;
+            var fdate = document.getElementById('txt_fdate').value;
+            var tdate = document.getElementById('txt_tdate').value;
+            var url = "{% url 'webadmin:ajaxreport' %}";
+            $.ajax({
+                url: url,
+                data: { status: status, fdate: fdate, tdate: tdate },
+                success: function (data) {
+                    $("#result").html(data);
+                },
+            });
+        }
+
+        function getPrint(bill) {
+            var printContent = document.getElementById(bill).innerHTML;
+            var originalContent = document.body.innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+        }
+    </script>
+</body>
+</html>
+{% endblock content %}
