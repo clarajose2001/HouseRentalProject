@@ -13,4 +13,5 @@ gunicorn
 django-mathfilters
 openai
 pandas
+seaborn
 
