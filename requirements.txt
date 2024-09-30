@@ -11,3 +11,4 @@ matplotlib
 reportlab
 gunicorn
 django-mathfilters
+openai
