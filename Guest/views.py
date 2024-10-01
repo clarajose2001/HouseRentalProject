@@ -86,4 +86,4 @@ def ownerregistration(request):
         return render(request, 'Guest/OwnerRegistration.html')
 
 def home_page(request):
-    return render(request,'Guest/Homepage.html')    
+    return render(request,'Guest/HomePage.html')    
