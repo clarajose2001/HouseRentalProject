@@ -75,7 +75,7 @@
                     <td>House</td>
                     <td>Amount</td> 
                     <td>Action</td>
-                    <td>Send Mail</td> 
+                   <!--<td>Send Mail</td>-->
                 </tr>   
                 {% for item in booking %}
                 <tr>
@@ -95,7 +95,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a class="btn btn-secondary" href="{% url 'webadmin:send_mail' item.id %}">Send Mail</a>
+                      <!--  <a class="btn btn-secondary" href="{% url 'webadmin:send_mail' item.id %}">Send Mail</a>-->
                     </td>
                 </tr>
                 {% endfor %}
