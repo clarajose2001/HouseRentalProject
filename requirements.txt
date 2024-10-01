@@ -14,4 +14,4 @@ django-mathfilters
 openai
 pandas
 seaborn
-
+textblob
